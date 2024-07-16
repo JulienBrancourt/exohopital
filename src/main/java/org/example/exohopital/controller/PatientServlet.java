@@ -103,11 +103,12 @@ public class PatientServlet extends HttpServlet {
         if (!file.exists()){
             file.mkdir();
         }
-        Part imagePart = req.getPart("imagePath");
-        String fileName = imagePart.getSubmittedFileName();
-        imagePart.write(uploadPath+File.separator+fileName);
-
-        boolean isCreated = patientService.createPatient(lastname, firstname, birthDate, req.getContextPath()+"/image/"+fileName );
+        Part image = req.getPart("imagePath");
+        String fileName = image.getSubmittedFileName();
+        image.write(uploadPath+File.separator+fileName);
+        String imagePath = uploadPath+File.separator+fileName;
+//todo: trouver chemin pour l'image (pas d'upload en bdd)
+        boolean isCreated = patientService.createPatient(lastname, firstname, birthDate, imagePath );
 
         if (isCreated) {
             resp.sendRedirect(req.getContextPath() + "/patient/global");
